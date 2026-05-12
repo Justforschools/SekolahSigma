@@ -3,220 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klub Sigma Indonesia - Beranda</title>
+    <title>Klub Sigma Indonesia - Elite Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        body { background-color: #000; color: #fff; scroll-behavior: smooth; font-family: sans-serif; }
+        body { background-color: #000; color: #fff; scroll-behavior: smooth; font-family: 'Inter', sans-serif; }
         .aksen-kuning { color: #facc15; }
         .bg-kuning { background-color: #facc15; }
-        .bingkai-sigma { border: 3px solid #facc15; }
+        .bingkai-sigma { border: 2px solid #facc15; }
         .kartu-hitam { background: #0a0a0a; border: 1px solid #222; transition: 0.4s; }
-        .kartu-hitam:hover { border-color: #facc15; transform: scale(1.02); }
-        .teks-bayangan { text-shadow: 2px 2px 10px rgba(250, 204, 21, 0.3); }
+        .kartu-hitam:hover { border-color: #facc15; }
+        .teks-bayangan { text-shadow: 0px 0px 15px rgba(250, 204, 21, 0.4); }
+        .swiper { width: 100%; height: 80vh; }
+        .swiper-slide { display: flex; align-items: center; justify-content: center; background-position: center; background-size: cover; }
+        .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(250, 204, 21, 0.2); }
     </style>
 </head>
 <body>
 
-    <!-- Navigasi Atas -->
-    <nav class="bg-black border-b border-zinc-800 p-5 sticky top-0 z-50">
+    <nav class="bg-black/90 border-b border-zinc-800 p-5 sticky top-0 z-[100] backdrop-blur-md">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center gap-10">
                 <h1 class="text-3xl font-black italic aksen-kuning tracking-tighter teks-bayangan">SIGMA<span class="text-white">CLUB</span></h1>
-                <div class="hidden lg:flex gap-8 text-xs font-bold uppercase tracking-widest">
-                    <a href="#beranda" class="hover:aksen-kuning transition">Beranda</a>
-                    <a href="#kurikulum" class="hover:aksen-kuning transition">Kurikulum</a>
-                    <a href="#perbandingan" class="hover:aksen-kuning transition">Sigma vs Beta</a>
-                    <a href="#progres" class="hover:aksen-kuning transition">Progres Klien</a>
-                    <a href="#markas" class="hover:aksen-kuning transition">Markas</a>
+                <div class="hidden lg:flex gap-8 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                    <a href="#beranda" class="hover:text-yellow-400 transition">Beranda</a>
+                    <a href="#kurikulum" class="hover:text-yellow-400 transition">6 Pilar</a>
+                    <a href="#admin-panel" id="nav-admin" class="hidden text-red-500 hover:text-white transition">Admin Panel</a>
                 </div>
             </div>
             
             <div id="nav-auth" class="flex gap-6">
-                <a href="masuk.html" class="text-white font-bold text-sm self-center hover:aksen-kuning transition">Masuk</a>
-                <a href="daftar.html" class="bg-kuning text-black px-6 py-2 rounded-sm font-black text-xs hover:bg-yellow-500 transition shadow-lg shadow-yellow-500/20">GABUNG</a>
+                <a href="masuk.html" class="text-white font-bold text-sm self-center">Masuk</a>
+                <a href="daftar.html" class="bg-kuning text-black px-6 py-2 rounded-sm font-black text-xs shadow-lg shadow-yellow-500/20">GABUNG</a>
             </div>
             
             <div id="nav-user" class="hidden flex gap-5 items-center">
                 <div class="flex flex-col items-end">
                     <span id="nama-pengguna" class="aksen-kuning font-bold text-sm"></span>
-                    <span class="text-[10px] text-zinc-500 uppercase">Anggota Elit</span>
+                    <span id="rank-pengguna" class="text-[10px] text-zinc-500 uppercase font-black tracking-widest"></span>
                 </div>
                 <button onclick="keluar()" class="text-xs bg-zinc-900 border border-zinc-700 px-4 py-2 rounded hover:bg-red-700 transition">KELUAR</button>
             </div>
         </div>
     </nav>
 
-    <!-- Header Utama -->
-    <header id="beranda" class="relative min-h-[90vh] flex items-center justify-center text-center px-4 overflow-hidden">
-        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#facc15 1px, transparent 1px); background-size: 40px 40px;"></div>
-        <div class="relative z-10">
-            <h2 class="text-6xl md:text-9xl font-black mb-6 italic uppercase leading-none">POLA PIKIR <br><span class="aksen-kuning">SIGMA</span></h2>
-            <p class="text-zinc-400 text-lg md:text-2xl max-w-3xl mx-auto mb-12 font-light italic">
-                "Jangan hanya menjadi penonton dalam hidup. Jadilah karakter utama yang misterius seperti Hisyam Telur."
-            </p>
-            <div class="flex flex-col md:flex-row justify-center gap-6">
-                <button onclick="alert('Peringatan: Sekali Anda masuk ke jalur Sigma, mental Beta Anda akan hancur selamanya.')" class="bg-kuning text-black font-black px-12 py-5 text-lg hover:tracking-widest transition-all duration-500 shadow-xl shadow-yellow-500/20 uppercase">Mulai Transformasi</button>
-                <a href="#kurikulum" class="border-2 border-white px-12 py-5 text-lg font-black hover:bg-white hover:text-black transition-all uppercase">Lihat Materi</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Kurikulum Materi -->
-    <section id="kurikulum" class="py-32 bg-zinc-950 border-y border-zinc-900">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row gap-16 items-center">
-                <div class="md:w-1/2 space-y-8">
-                    <h3 class="text-5xl font-black italic aksen-kuning">KURIKULUM <br>100% BERHASIL</h3>
-                    <div class="space-y-6">
-                        <div class="flex gap-6 p-6 kartu-hitam rounded-xl">
-                            <i class="fas fa-eye text-3xl aksen-kuning"></i>
-                            <div>
-                                <h4 class="text-xl font-bold mb-2">Kontrol Tatapan Mata</h4>
-                                <p class="text-zinc-500 text-sm">Pelajari cara menatap tanpa berkedip untuk mengintimidasi lawan bicara Anda.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6 p-6 kartu-hitam rounded-xl">
-                            <i class="fas fa-comment-slash text-3xl aksen-kuning"></i>
-                            <div>
-                                <h4 class="text-xl font-bold mb-2">Hukum Keheningan</h4>
-                                <p class="text-zinc-500 text-sm">Bicara hanya 10% dari apa yang Anda pikirkan. Biarkan misteri menyelimuti Anda.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6 p-6 kartu-hitam rounded-xl">
-                            <i class="fas fa-dumbbell text-3xl aksen-kuning"></i>
-                            <div>
-                                <h4 class="text-xl font-bold mb-2">Latihan Rahang (Mewing)</h4>
-                                <p class="text-zinc-500 text-sm">Teknik posisi lidah untuk mendapatkan garis rahang setajam silet dalam 30 hari.</p>
-                            </div>
-                        </div>
-                    </div>
+    <div class="swiper mySwiper" id="beranda">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');">
+                <div class="text-center px-4">
+                    <h2 class="text-6xl md:text-8xl font-black italic uppercase leading-none mb-4">HANCURKAN <br><span class="aksen-kuning">BATASANMU</span></h2>
+                    <p class="text-zinc-300 italic max-w-2xl mx-auto">"Seorang Sigma tidak menunggu kesempatan, dia menciptakan kekuasaan sendiri."</p>
                 </div>
-                <div class="md:w-1/2">
-                    <div class="bingkai-sigma rounded-3xl overflow-hidden shadow-2xl shadow-yellow-500/10">
-                        <!-- Video sesuai LKPD -->
-                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/S2oW2YnOny4" title="Teori Sigma" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                    <p class="mt-4 text-center text-zinc-500 italic">"Simak video ini berulang kali untuk menghapus memori Beta Anda."</p>
+            </div>
+            <div class="swiper-slide" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop');">
+                <div class="text-center px-4">
+                    <h2 class="text-6xl md:text-8xl font-black italic uppercase leading-none mb-4 text-white">DISIPLIN <br><span class="aksen-kuning">BESI</span></h2>
+                    <p class="text-zinc-300 italic max-w-2xl mx-auto">"Motivasi membuatmu mulai, disiplin membuatmu terus berjalan sampai puncak."</p>
                 </div>
             </div>
         </div>
-    </section>
+        <div class="swiper-pagination"></div>
+    </div>
 
-    <!-- Sigma vs Beta -->
-    <section id="perbandingan" class="py-32">
+    <section id="user-dashboard" class="hidden py-16 bg-zinc-950 border-b border-zinc-800">
         <div class="container mx-auto px-4">
-            <h3 class="text-5xl font-black mb-20 text-center uppercase aksen-kuning italic">SIGMA VS BETA</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                <!-- HISYAM SIGMA -->
-                <div class="group">
-                    <div class="relative overflow-hidden rounded-3xl bingkai-sigma">
-                        <img src="HisyamSigma.jpg" alt="Hisyam" class="w-full h-[600px] object-cover grayscale group-hover:grayscale-0 transition duration-1000 group-hover:scale-110">
-                        <div class="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-black to-transparent">
-                            <h4 class="text-4xl font-black aksen-kuning uppercase">Hisyam (Sigma Sejati)</h4>
-                            <p class="text-white mt-2">Tidak butuh validasi. Mandiri. Karakter Utama.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- RAJA BETA -->
-                <div class="opacity-30 hover:opacity-50 transition duration-500">
-                    <div class="relative overflow-hidden rounded-3xl border-4 border-zinc-800">
-                        <img src="RajaLigma.jpg" alt="Raja" class="w-full h-[600px] object-cover grayscale">
-                        <div class="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-black to-transparent">
-                            <h4 class="text-4xl font-black text-zinc-600 uppercase">Raja (Kasta Beta)</h4>
-                            <p class="text-zinc-500 mt-2">Terlalu berisik. Mencari perhatian. Karakter Sampingan.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Progres Klien Ismail -->
-    <section id="progres" class="py-32 bg-zinc-950">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-20">
-                <h3 class="text-5xl font-black mb-6 uppercase italic text-white">HASIL <span class="aksen-kuning">TRANSFORMASI</span></h3>
-                <p class="text-zinc-500">Ismail membuktikan bahwa konsistensi dalam 30 hari dapat merubah segalanya.</p>
-            </div>
-            
-            <div class="flex flex-col md:flex-row gap-10 justify-center">
-                <div class="kartu-hitam p-8 rounded-3xl text-center w-full md:w-1/3">
-                    <p class="bg-zinc-800 text-white text-xs font-bold px-5 py-2 rounded-full inline-block mb-6">PROGRES HARI KE-1</p>
-                    <div class="rounded-2xl overflow-hidden border border-zinc-800 mb-6">
-                        <img src="IsmailBef.jpg" alt="Ismail Sebelum" class="w-full h-80 object-cover">
-                    </div>
-                    <h5 class="text-xl font-bold text-zinc-400">ISMAIL (TAHAP AWAL)</h5>
-                    <p class="text-zinc-600 text-sm mt-2 italic">Mental masih lemah, belum mengenal teknik Mewing.</p>
+            <div class="glass-card p-10 rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="text-center md:text-left">
+                    <h3 class="text-3xl font-black uppercase italic mb-2">Status Evolusi</h3>
+                    <p class="text-zinc-500 text-sm italic">Jangan biarkan streak ini mati atau kembali ke kasta Beta.</p>
                 </div>
                 
-                <div class="flex items-center justify-center">
-                    <i class="fas fa-chevron-right text-4xl aksen-kuning hidden md:block"></i>
-                    <i class="fas fa-chevron-down text-4xl aksen-kuning block md:hidden"></i>
-                </div>
-
-                <div class="kartu-hitam p-8 rounded-3xl text-center w-full md:w-1/3 border-yellow-500 border-2 shadow-2xl shadow-yellow-500/20">
-                    <p class="bg-kuning text-black text-xs font-bold px-5 py-2 rounded-full inline-block mb-6 uppercase">Progres Hari ke-30</p>
-                    <div class="rounded-2xl overflow-hidden mb-6">
-                        <img src="IsmailAft.jpg" alt="Ismail Sesudah" class="w-full h-80 object-cover">
+                <div class="flex gap-8 text-center">
+                    <div class="bg-black/50 p-6 rounded-2xl border border-zinc-800 min-w-[120px]">
+                        <span class="block text-4xl font-black aksen-kuning" id="display-streak">0</span>
+                        <span class="text-[10px] uppercase text-zinc-500 font-bold">Hari Streak</span>
                     </div>
-                    <h5 class="text-xl font-bold aksen-kuning uppercase">Ismail (Sigma Elit)</h5>
-                    <p class="text-zinc-400 text-sm mt-2 italic">Garis rahang tajam, tatapan mata predator, mental baja.</p>
+                    <div class="bg-black/50 p-6 rounded-2xl border border-zinc-800 min-w-[150px]">
+                        <span class="block text-xl font-black text-white uppercase italic" id="display-rank">BETA</span>
+                        <span class="text-[10px] uppercase text-zinc-500 font-bold">Kasta Saat Ini</span>
+                    </div>
                 </div>
+
+                <button onclick="tambahStreak()" id="btn-absen" class="bg-kuning text-black font-black px-10 py-5 rounded-xl hover:scale-105 transition-all uppercase tracking-tighter">
+                    Ambil Misi Harian
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Markas SMAN 8 -->
-    <section id="markas" class="py-32">
-        <div class="container mx-auto px-4 text-center">
-            <h3 class="text-4xl font-black mb-4 uppercase italic">MARKAS BESAR PELATIHAN</h3>
-            <p class="aksen-kuning font-bold text-xl mb-12 tracking-widest">SMA NEGERI 8 YOGYAKARTA</p>
-            
-            <div id="konten-terkunci" class="bg-zinc-950 h-[500px] flex flex-col items-center justify-center border-4 border-dashed border-zinc-800 rounded-[40px] px-6">
-                <div class="w-24 h-24 bg-zinc-900 rounded-full flex items-center justify-center mb-8 border border-zinc-700">
-                    <i class="fas fa-lock text-4xl text-zinc-600"></i>
-                </div>
-                <h4 class="text-2xl font-bold mb-4 uppercase tracking-tighter">Data Lokasi Terenkripsi</h4>
-                <p class="text-zinc-500 mb-10 max-w-md">Koordinat markas hanya bisa diakses oleh anggota resmi yang sudah terdaftar dalam sistem.</p>
-                <a href="masuk.html" class="bg-kuning text-black px-12 py-4 font-black rounded-full hover:bg-yellow-500 transition shadow-xl shadow-yellow-500/10">MASUK UNTUK MEMBUKA PETA</a>
-            </div>
-
-            <div id="konten-terbuka" class="hidden">
-                <div class="h-[500px] rounded-[40px] overflow-hidden bingkai-sigma shadow-2xl shadow-yellow-500/20">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.0366838332155!2d110.38541571063462!3d-7.785934577232233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59960787e91d%3A0x6b13e8a49c614b1!2sSMA%20Negeri%208%20Yogyakarta!5e0!3m2!1sid!2sid!4v1715600000000!5m2!1sid!2sid" class="w-full h-full" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-                <p class="mt-6 text-zinc-500 font-medium">Jl. Sidobali No.1, Muja Muju, Kec. Umbulharjo, Kota Yogyakarta</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Kaki Website -->
-    <footer class="py-20 border-t border-zinc-900 bg-black text-center">
+    <section id="kurikulum" class="py-32">
         <div class="container mx-auto px-4">
-            <h2 class="text-2xl font-black italic aksen-kuning mb-6">SIGMA CLUB INDONESIA</h2>
-            <div class="flex justify-center gap-8 mb-10 text-zinc-500 text-sm">
-                <a href="#" class="hover:text-white">Kebijakan Privasi</a>
-                <a href="#" class="hover:text-white">Syarat Penggunaan</a>
-                <a href="#" class="hover:text-white">Kontak Admin</a>
+            <h3 class="text-5xl font-black italic aksen-kuning mb-4 text-center uppercase">6 Pilar Kekuatan Sigma</h3>
+            <p class="text-zinc-500 text-center mb-20 italic">"Gunakan pilar ini untuk meruntuhkan dominasi Beta."</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="kartu-hitam p-8 rounded-3xl space-y-4">
+                    <div class="h-48 rounded-xl overflow-hidden mb-4">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/y8OzRym_eW0" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <h4 class="text-2xl font-black italic aksen-kuning">1. LATIHAN EKSTREM</h4>
+                    <div class="text-zinc-400 text-sm line-clamp-3 transition-all duration-500" id="desc-1">
+                        Seorang Sigma harus memiliki fisik yang siap bertarung kapan saja. Latihan ekstrem bukan hanya soal otot, tapi soal bagaimana Anda menaklukkan rasa sakit dan kelelahan setiap hari. Ini adalah fondasi utama dari kasta tertinggi.
+                    </div>
+                    <button onclick="toggleDesc('desc-1')" class="text-xs font-bold text-white underline">Baca Selengkapnya</button>
+                </div>
+
+                <div class="kartu-hitam p-8 rounded-3xl space-y-4">
+                    <div class="h-48 rounded-xl overflow-hidden mb-4">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ndmWul5vF3E" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <h4 class="text-2xl font-black italic aksen-kuning">2. TEKNIK MEWING</h4>
+                    <div class="text-zinc-400 text-sm line-clamp-3 transition-all duration-500" id="desc-2">
+                        Garis rahang yang tajam mencerminkan kedisiplinan. Dengan teknik penempatan lidah yang benar (Mewing), Anda merestrukturisasi wajah Anda menjadi lebih maskulin dan mengintimidasi lawan tanpa bicara.
+                    </div>
+                    <button onclick="toggleDesc('desc-2')" class="text-xs font-bold text-white underline">Baca Selengkapnya</button>
+                </div>
+
+                <div class="kartu-hitam p-8 rounded-3xl space-y-4">
+                    <div class="h-48 rounded-xl overflow-hidden mb-4">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/1wq1AqihmVo" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <h4 class="text-2xl font-black italic aksen-kuning">3. KETAHANAN MENTAL</h4>
+                    <div class="text-zinc-400 text-sm line-clamp-3 transition-all duration-500" id="desc-3">
+                        Dunia akan mencoba menjatuhkan Anda. Ketahanan mental adalah perisai. Pelajari cara mengendalikan emosi, tetap tenang di bawah tekanan, dan tidak pernah mencari validasi dari orang lain.
+                    </div>
+                    <button onclick="toggleDesc('desc-3')" class="text-xs font-bold text-white underline">Baca Selengkapnya</button>
+                </div>
+
+                <div class="kartu-hitam p-8 rounded-3xl space-y-4">
+                    <div class="h-48 rounded-xl overflow-hidden mb-4">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/hy8qQ8AX4zU" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <h4 class="text-2xl font-black italic aksen-kuning">4. KEMANDIRIAN DANA</h4>
+                    <div class="text-zinc-400 text-sm line-clamp-3 transition-all duration-500" id="desc-4">
+                        Jangan jadi budak sistem. Kemandirian finansial memungkinkan Anda untuk hidup bebas. Bangun asetmu, kuasai ekonomi, dan jadilah raja di kerajaan finansialmu sendiri.
+                    </div>
+                    <button onclick="toggleDesc('desc-4')" class="text-xs font-bold text-white underline">Baca Selengkapnya</button>
+                </div>
+
+                <div class="kartu-hitam p-8 rounded-3xl space-y-4">
+                    <div class="h-48 rounded-xl overflow-hidden mb-4">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/6LVO4aMMuZA" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <h4 class="text-2xl font-black italic aksen-kuning">5. KEKUATAN OTAK</h4>
+                    <div class="text-zinc-400 text-sm line-clamp-3 transition-all duration-500" id="desc-5">
+                        Otot tanpa otak adalah sia-sia. Perluas wawasan, pelajari psikologi manusia, strategi perang, dan manipulasi pasar. Pengetahuan adalah senjata yang paling mematikan.
+                    </div>
+                    <button onclick="toggleDesc('desc-5')" class="text-xs font-bold text-white underline">Baca Selengkapnya</button>
+                </div>
+
+                <div class="kartu-hitam p-8 rounded-3xl space-y-4">
+                    <div class="h-48 rounded-xl overflow-hidden mb-4">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/B66sL0ydS_8" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <h4 class="text-2xl font-black italic aksen-kuning">6. KEDISIPLINAN BESI</h4>
+                    <div class="text-zinc-400 text-sm line-clamp-3 transition-all duration-500" id="desc-6">
+                        Pilar yang mengikat segalanya. Lakukan apa yang harus dilakukan, meskipun Anda tidak menyukainya. Tanpa disiplin, Anda hanyalah seorang Beta yang bermimpi.
+                    </div>
+                    <button onclick="toggleDesc('desc-6')" class="text-xs font-bold text-white underline">Baca Selengkapnya</button>
+                </div>
             </div>
-            <p class="text-zinc-700 text-[10px] uppercase tracking-[0.3em] font-bold">
-                Dibuat khusus untuk tugas Informatika - SMA N 8 Yogyakarta <br>
-                &copy; 2024 HISYAM TELUR x RAJA LIGMA
-            </p>
         </div>
+    </section>
+
+    <section class="py-20 bg-zinc-950">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-4xl font-black italic mb-12 uppercase">Dosis Motivasi <span class="aksen-kuning">Harian</span></h3>
+            <div class="max-w-4xl mx-auto rounded-[3rem] overflow-hidden bingkai-sigma shadow-2xl">
+                <iframe width="100%" height="500" src="https://www.youtube.com/embed/3MNPhH-98Fw" title="Sigma Motivation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="admin-panel" class="hidden py-32 bg-black">
+        <div class="container mx-auto px-4">
+            <h3 class="text-4xl font-black aksen-kuning mb-10 italic uppercase border-l-8 border-yellow-400 pl-6">Markas Komando Admin</h3>
+            <div class="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800">
+                <table class="w-full text-left">
+                    <thead class="bg-zinc-800 text-zinc-400 uppercase text-[10px] font-bold tracking-[0.2em]">
+                        <tr>
+                            <th class="p-6">Nama Pengguna</th>
+                            <th class="p-6">Streak</th>
+                            <th class="p-6">Kasta</th>
+                            <th class="p-6">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 border-t border-zinc-900 bg-black text-center">
+        <p class="text-zinc-700 text-[10px] uppercase tracking-[0.3em] font-bold italic">
+            © 2024 SIGMA CLUB - SMAN 8 YOGYAKARTA <br>
+            "BE THE MAIN CHARACTER"
+        </p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        // Inisialisasi Swiper Slider
+        const swiper = new Swiper(".mySwiper", {
+            pagination: { el: ".swiper-pagination", clickable: true },
+            autoplay: { delay: 4000 },
+            loop: true
+        });
+
+        // Database & Logic User
         window.onload = function() {
             const userSekarang = localStorage.getItem('userAktif');
+            let db = JSON.parse(localStorage.getItem('databaseSigma') || '{}');
+
+            // Cek Admin Default
+            if (userSekarang === 'admin') {
+                document.getElementById('nav-admin').classList.remove('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                renderAdminTable();
+            }
+
             if(userSekarang) {
                 document.getElementById('nav-auth').classList.add('hidden');
                 document.getElementById('nav-user').classList.remove('hidden');
+                document.getElementById('user-dashboard').classList.remove('hidden');
                 document.getElementById('nama-pengguna').innerText = userSekarang;
                 
-                document.getElementById('konten-terkunci').classList.add('hidden');
-                document.getElementById('konten-terbuka').classList.remove('hidden');
+                // Load data spesifik user
+                updateUserDisplay();
+            }
+        }
+
+        function getRank(streak) {
+            if (streak >= 60) return "ULTIMATE SIGMA";
+            if (streak >= 30) return "SIGMA";
+            if (streak >= 15) return "SETENGAH SIGMA";
+            return "BETA";
+        }
+
+        function updateUserDisplay() {
+            const user = localStorage.getItem('userAktif');
+            let dbFull = JSON.parse(localStorage.getItem('userDataSigma') || '{}');
+            
+            // Inisialisasi data jika belum ada
+            if(!dbFull[user]) {
+                dbFull[user] = { streak: 0, lastCheckIn: '' };
+            }
+
+            const streak = dbFull[user].streak;
+            const rank = getRank(streak);
+
+            document.getElementById('display-streak').innerText = streak;
+            document.getElementById('display-rank').innerText = rank;
+            document.getElementById('rank-pengguna').innerText = rank;
+            
+            // Atur warna rank
+            if(rank === "ULTIMATE SIGMA") document.getElementById('display-rank').className = "block text-xl font-black text-yellow-400 uppercase italic teks-bayangan";
+
+            localStorage.setItem('userDataSigma', JSON.stringify(dbFull));
+        }
+
+        function tambahStreak() {
+            const user = localStorage.getItem('userAktif');
+            let dbFull = JSON.parse(localStorage.getItem('userDataSigma') || '{}');
+            const today = new Date().toLocaleDateString();
+
+            if (dbFull[user].lastCheckIn === today) {
+                alert("Misi hari ini sudah selesai! Kembali lagi besok untuk mempertahankan streak.");
+                return;
+            }
+
+            dbFull[user].streak += 1;
+            dbFull[user].lastCheckIn = today;
+            localStorage.setItem('userDataSigma', JSON.stringify(dbFull));
+            
+            alert("Misi berhasil! Streak Anda naik menjadi " + dbFull[user].streak);
+            updateUserDisplay();
+            if(user === 'admin') renderAdminTable();
+        }
+
+        function toggleDesc(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('line-clamp-3');
+        }
+
+        function renderAdminTable() {
+            const tableBody = document.getElementById('admin-table-body');
+            let dbFull = JSON.parse(localStorage.getItem('userDataSigma') || '{}');
+            let dbSandi = JSON.parse(localStorage.getItem('databaseSigma') || '{}');
+            
+            tableBody.innerHTML = '';
+
+            // Gabungkan list dari database login
+            Object.keys(dbSandi).forEach(username => {
+                const streak = (dbFull[username] ? dbFull[username].streak : 0);
+                const rank = getRank(streak);
+                
+                tableBody.innerHTML += `
+                    <tr class="border-b border-zinc-800 hover:bg-zinc-800/30 transition">
+                        <td class="p-6 font-bold">${username}</td>
+                        <td class="p-6 aksen-kuning font-black">${streak} Hari</td>
+                        <td class="p-6 text-xs font-black uppercase">${rank}</td>
+                        <td class="p-6">
+                            <button onclick="resetUser('${username}')" class="text-[10px] bg-red-900/20 text-red-500 border border-red-500/30 px-3 py-1 rounded-full hover:bg-red-500 hover:text-white transition">RESET</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function resetUser(user) {
+            if(confirm('Reset streak ' + user + ' menjadi 0?')) {
+                let dbFull = JSON.parse(localStorage.getItem('userDataSigma') || '{}');
+                if(dbFull[user]) dbFull[user].streak = 0;
+                localStorage.setItem('userDataSigma', JSON.stringify(dbFull));
+                renderAdminTable();
+                if(localStorage.getItem('userAktif') === user) updateUserDisplay();
             }
         }
 
