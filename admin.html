@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Pengelola - Sigma Club</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <nav class="bg-zinc-900 p-6 flex justify-between items-center border-b border-zinc-800">
+        <h1 class="text-2xl font-black italic text-yellow-400 uppercase">PUSAT KENDALI PENGELOLA</h1>
+        <a href="index.html" class="text-xs bg-zinc-800 px-4 py-2 rounded font-bold uppercase">Kembali ke Beranda</a>
+    </nav>
+
+    <!-- Bagian Masuk Admin -->
+    <div id="masuk-pengelola" class="flex items-center justify-center py-40">
+        <div class="bg-zinc-950 p-10 rounded-3xl border border-zinc-800 w-full max-w-sm">
+            <h2 class="text-xl font-bold mb-6 text-center uppercase tracking-widest">Verifikasi Akses</h2>
+            <input type="text" id="adminNama" placeholder="Nama Pengelola" class="w-full bg-zinc-900 p-3 rounded-lg mb-4 outline-none border border-zinc-800 focus:border-yellow-400 text-white">
+            <input type="password" id="adminSandi" placeholder="Kata Sandi" class="w-full bg-zinc-900 p-3 rounded-lg mb-6 outline-none border border-zinc-800 focus:border-yellow-400 text-white">
+            <button onclick="verifikasiAkses()" class="w-full bg-yellow-400 text-black font-bold py-3 rounded-lg uppercase tracking-tighter">Buka Sistem</button>
+        </div>
+    </div>
+
+    <!-- Bagian Dashboard Admin -->
+    <div id="dasbor-pengelola" class="hidden container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800">
+                <p class="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">Total Anggota Terdaftar</p>
+                <h4 id="jumlah-pengguna" class="text-4xl font-black text-yellow-400">0</h4>
+            </div>
+            <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800">
+                <p class="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">Total Rangkaian Hari Kolektif</p>
+                <h4 id="total-streak-kolektif" class="text-4xl font-black text-white">0</h4>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold mb-6 uppercase border-l-4 border-yellow-400 pl-4">Daftar Anggota Aktif</h3>
+        <div class="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 shadow-xl">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-zinc-800 text-zinc-400 uppercase text-[10px] font-black">
+                    <tr>
+                        <th class="p-4">Nama Pengguna</th>
+                        <th class="p-4">Alamat Surel</th>
+                        <th class="p-4">Rangkaian (Streak)</th>
+                        <th class="p-4">Tingkatan Kasta</th>
+                        <th class="p-4">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="daftar-tabel-pengguna"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function verifikasiAkses() {
+            const nama = document.getElementById('adminNama').value;
+            const sandi = document.getElementById('adminSandi').value;
+            if(nama === 'admin' && sandi === '123') {
+                document.getElementById('masuk-pengelola').classList.add('hidden');
+                document.getElementById('dasbor-pengelola').classList.remove('hidden');
+                muatSeluruhData();
+            } else {
+                alert("Akses Ditolak: Anda tidak memiliki otoritas pengelola.");
+            }
+        }
+
+        function muatSeluruhData() {
+            const dataBasis = JSON.parse(localStorage.getItem('userDataSigma') || '{}');
+            const badanTabel = document.getElementById('daftar-tabel-pengguna');
+            badanTabel.innerHTML = '';
+            
+            let jumlahStreak = 0;
+            let jumlahAnggota = 0;
+
+            Object.keys(dataBasis).forEach(user => {
+                jumlahAnggota++;
+                const d = dataBasis[user];
+                jumlahStreak += d.streak;
+                
+                let kasta = "BETA";
+                if(d.streak >= 60) kasta = "SIGMA TERTINGGI";
+                else if(d.streak >= 30) kasta = "SIGMA SEJATI";
+                else if(d.streak >= 15) kasta = "CALON SIGMA";
+
+                badanTabel.innerHTML += `
+                    <tr class="border-b border-zinc-800 hover:bg-zinc-800/50 transition">
+                        <td class="p-4 font-bold text-yellow-400">${user}</td>
+                        <td class="p-4 text-zinc-400">${d.email || '-'}</td>
+                        <td class="p-4 font-black text-white">${d.streak} Hari</td>
+                        <td class="p-4 text-[10px] font-black uppercase">${kasta}</td>
+                        <td class="p-4">
+                            <button onclick="hapusAnggota('${user}')" class="text-red-500 hover:underline font-bold text-xs">HAPUS</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('jumlah-pengguna').innerText = jumlahAnggota;
+            document.getElementById('total-streak-kolektif').innerText = jumlahStreak;
+        }
+
+        function hapusAnggota(nama) {
+            if(confirm(`Peringatan: Hapus permanen akun ${nama}? Tindakan ini tidak bisa dibatalkan.`)) {
+                let dataBasis = JSON.parse(localStorage.getItem('userDataSigma') || '{}');
+                let basisSandi = JSON.parse(localStorage.getItem('databaseSigma') || '{}');
+                delete dataBasis[nama];
+                delete basisSandi[nama];
+                localStorage.setItem('userDataSigma', JSON.stringify(dataBasis));
+                localStorage.setItem('databaseSigma', JSON.stringify(basisSandi));
+                muatSeluruhData();
+            }
+        }
+    </script>
+</body>
+</html>
