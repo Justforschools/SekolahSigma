@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Masuk - Sigma Club</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white h-screen flex flex-col">
+    <nav class="p-8">
+        <a href="index.html" class="text-yellow-400 font-black text-3xl italic tracking-tighter">SIGMACLUB</a>
+    </nav>
+    
+    <div class="flex-grow flex items-center justify-center px-4">
+        <div class="bg-zinc-950 p-12 rounded-[2rem] border border-zinc-800 w-full max-w-md shadow-2xl shadow-yellow-500/5">
+            <h2 class="text-4xl font-black mb-3 italic text-yellow-400 uppercase tracking-tighter">Akses Masuk</h2>
+            <p class="text-zinc-500 text-sm mb-10 italic">Selamat datang kembali, petarung kasta tertinggi.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-zinc-500 mb-2 uppercase tracking-[0.2em]">Identitas Pengguna</label>
+                    <input type="text" id="pengguna" placeholder="Masukkan nama..." class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-2xl focus:border-yellow-400 outline-none text-white transition-all font-medium">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-zinc-500 mb-2 uppercase tracking-[0.2em]">Kata Sandi Rahasia</label>
+                    <input type="password" id="sandi" placeholder="********" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-2xl focus:border-yellow-400 outline-none text-white transition-all font-medium">
+                </div>
+                <button onclick="prosesMasuk()" class="w-full bg-yellow-400 text-black font-black py-5 rounded-2xl hover:bg-yellow-500 transition-all uppercase tracking-widest mt-4 shadow-lg shadow-yellow-500/20">Verifikasi Sigma</button>
+            </div>
+            
+            <p class="text-center mt-10 text-sm text-zinc-600">
+                Belum terdaftar? <a href="daftar.html" class="text-yellow-400 font-bold hover:underline">Daftar sekarang</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function prosesMasuk() {
+            const u = document.getElementById('pengguna').value;
+            const p = document.getElementById('sandi').value;
+
+            if (u === "heri" && p === "123") {
+                alert("Verifikasi Berhasil! Selamat datang sang legenda, Heri.");
+                localStorage.setItem('userAktif', "Heri");
+                window.location.href = "index.html";
+                return;
+            }
+
+            const database = JSON.parse(localStorage.getItem('databaseSigma') || '{}');
+
+            if (database[u] && database[u] === p) {
+                alert("Akses diberikan! Halo " + u + ".");
+                localStorage.setItem('userAktif', u);
+                window.location.href = "index.html";
+            } else {
+                alert("Akses ditolak! Nama pengguna atau kata sandi tidak valid. Periksa kembali.");
+            }
+        }
+    </script>
+</body>
+</html>
