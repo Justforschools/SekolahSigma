@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Sigma Club Indonesia</title>
+    <script src="[cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <link href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)" rel="stylesheet">
+    <style>
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .aksen-kuning { color: #facc15; }
+        .bg-kuning { background-color: #facc15; }
+        .input-sigma {
+            background: #111;
+            border: 1px solid #333;
+            color: #fff;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .input-sigma:focus { border-color: #facc15; }
+        .input-sigma::placeholder { color: #555; }
+        .kartu { background: #0a0a0a; border: 1px solid #222; }
+        .tombol-utama {
+            width: 100%;
+            background: #facc15;
+            color: #000;
+            font-weight: 900;
+            padding: 13px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .tombol-utama:hover { background: #eab308; }
+        .tombol-utama:disabled { background: #555; cursor: not-allowed; }
+        .pesan-error { color: #f87171; font-size: 0.8rem; text-align: center; margin-top: 8px; display: none; }
+        .pesan-sukses { color: #4ade80; font-size: 0.8rem; text-align: center; margin-top: 8px; display: none; }
+        .syarat { font-size: 0.72rem; color: #555; margin-top: 4px; }
+        .kekuatan-bar { height: 4px; border-radius: 2px; transition: width 0.3s, background 0.3s; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navigasi -->
+    <nav class="bg-black/90 border-b border-zinc-800 p-5 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-black italic aksen-kuning tracking-tighter">SIGMACLUB</a>
+            <a href="index.html" class="text-zinc-400 text-sm hover:text-yellow-400 transition">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali ke Beranda
+            </a>
+        </div>
+    </nav>
+
+    <!-- Form Register -->
+    <main class="flex-grow flex items-center justify-center px-4 py-16">
+        <div class="kartu p-10 rounded-2xl w-full max-w-md shadow-2xl">
+
+            <!-- Header -->
+            <div class="text-center mb-10">
+                <div class="text-6xl mb-4">🔥</div>
+                <h1 class="text-3xl font-black italic uppercase mb-2">BERGABUNG <span class="aksen-kuning">SIGMA</span></h1>
+                <p class="text-zinc-500 text-sm">Mulai perjalanan transformasimu hari ini</p>
+            </div>
+
+            <!-- Form -->
+            <form id="registerForm" onsubmit="prosesDaftar(event)">
+                <div class="space-y-5">
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-400 mb-2 tracking-widest">Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="input-sigma" 
+                            placeholder="Pilih username unikmu..."
+                            autocomplete="username"
+                            oninput="cekUsername()"
+                            required
+                        >
+                        <p class="syarat">Minimal 3 karakter, hanya huruf, angka, dan underscore (_)</p>
+                        <p id="status-username" class="syarat mt-1"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-400 mb-2 tracking-widest">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="input-sigma" 
+                            placeholder="email@contoh.com"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-400 mb-2 tracking-widest">Password</label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="input-sigma pr-12" 
+                                placeholder="Buat password yang kuat..."
+                                autocomplete="new-password"
+                                oninput="cekKekuatanPassword()"
+                                required
+                            >
+                            <button 
+                                type="button"
+                                onclick="togglePassword('password', 'ikon-password')" 
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-yellow-400 transition"
+                            >
+                                <i class="fas fa-eye" id="ikon-password"></i>
+                            </button>
+                        </div>
+                        <!-- Indikator kekuatan password -->
+                        <div class="mt-2 bg-zinc-800 rounded-full h-1">
+                            <div id="bar-kekuatan" class="kekuatan-bar bg-zinc-700" style="width:0%"></div>
+                        </div>
+                        <p id="teks-kekuatan" class="syarat mt-1"></p>
+                        <p class="syarat">Minimal 6 karakter</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-400 mb-2 tracking-widest">Konfirmasi Password</label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="konfirmasi-password" 
+                                class="input-sigma pr-12" 
+                                placeholder="Ulangi password..."
+                                autocomplete="new-password"
+                                oninput="cekKonfirmasi()"
+                                required
+                            >
+                            <button 
+                                type="button"
+                                onclick="togglePassword('konfirmasi-password', 'ikon-konfirmasi')" 
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-yellow-400 transition"
+                            >
+                                <i class="fas fa-eye" id="ikon-konfirmasi"></i>
+                            </button>
+                        </div>
+                        <p id="status-konfirmasi" class="syarat mt-1"></p>
+                    </div>
+
+                    <div id="pesan-error" class="pesan-error">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        <span id="teks-error"></span>
+                    </div>
+                    <div id="pesan-sukses" class="pesan-sukses">
+                        <i class="fas fa-check-circle mr-1"></i>
+                        <span id="teks-sukses"></span>
+                    </div>
+
+                    <button type="submit" class="tombol-utama" id="tombol-daftar">
+                        <i class="fas fa-user-plus mr-2"></i>DAFTAR SEKARANG
+                    </button>
+
+                </div>
+            </form>
+
+            <!-- Divider -->
+            <div class="flex items-center my-8">
+                <div class="flex-grow border-t border-zinc-800"></div>
+                <span class="mx-4 text-zinc-600 text-xs uppercase">atau</span>
+                <div class="flex-grow border-t border-zinc-800"></div>
+            </div>
+
+            <p class="text-center text-zinc-500 text-sm">
+                Sudah punya akun? 
+                <a href="masuk.html" class="aksen-kuning font-bold hover:underline">Masuk Sekarang</a>
+            </p>
+
+        </div>
+    </main>
+
+    <footer class="py-6 border-t border-zinc-900 text-center text-zinc-700 text-[10px] font-bold uppercase tracking-widest">
+        &copy; 2024 SIGMA CLUB - SMAN 8 YOGYAKARTA
+    </footer>
+
+    <script>
+        function togglePassword(idInput, idIkon) {
+            const input = document.getElementById(idInput);
+            const ikon = document.getElementById(idIkon);
+            if (input.type === 'password') {
+                input.type = 'text';
+                ikon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                ikon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function cekUsername() {
+            const val = document.getElementById('username').value;
+            const status = document.getElementById('status-username');
+            const regex = /^[a-zA-Z0-9_]{3,}$/;
+            if (val.length === 0) { status.innerText = ''; return; }
+            if (!regex.test(val)) {
+                status.style.color = '#f87171';
+                status.innerText = '✗ Hanya huruf, angka, dan underscore (min. 3 karakter)';
+            } else {
+                status.style.color = '#4ade80';
+                status.innerText = '✓ Username valid';
+            }
+        }
+
+        function cekKekuatanPassword() {
+            const password = document.getElementById('password').value;
+            const bar = document.getElementById('bar-kekuatan');
+            const teks = document.getElementById('teks-kekuatan');
+            let skor = 0;
+            if (password.length >= 6) skor++;
+            if (password.length >= 10) skor++;
+            if (/[A-Z]/.test(password)) skor++;
+            if (/[0-9]/.test(password)) skor++;
+            if (/[^A-Za-z0-9]/.test(password)) skor++;
+
+            const level = ['', 'Sangat Lemah', 'Lemah', 'Sedang', 'Kuat', 'Sangat Kuat'];
+            const warna = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#4ade80'];
+            const lebar = ['0%', '20%', '40%', '60%', '80%', '100%'];
+
+            bar.style.width = lebar[skor];
+            bar.style.background = warna[skor];
+            teks.innerText = skor > 0 ? `Kekuatan: ${level[skor]}` : '';
+            teks.style.color = warna[skor];
+        }
+
+        function cekKonfirmasi() {
+            const pass = document.getElementById('password').value;
+            const konfirmasi = document.getElementById('konfirmasi-password').value;
+            const status = document.getElementById('status-konfirmasi');
+            if (konfirmasi.length === 0) { status.innerText = ''; return; }
+            if (pass === konfirmasi) {
+                status.style.color = '#4ade80';
+                status.innerText = '✓ Password cocok';
+            } else {
+                status.style.color = '#f87171';
+                status.innerText = '✗ Password tidak cocok';
+            }
+        }
+
+        function tampilError(pesan) {
+            const elError = document.getElementById('pesan-error');
+            const elSukses = document.getElementById('pesan-sukses');
+            document.getElementById('teks-error').innerText = pesan;
+            elError.style.display = 'block';
+            elSukses.style.display = 'none';
+        }
+
+        function tampilSukses(pesan) {
+            const elError = document.getElementById('pesan-error');
+            const elSukses = document.getElementById('pesan-sukses');
+            document.getElementById('teks-sukses').innerText = pesan;
+            elSukses.style.display = 'block';
+            elError.style.display = 'none';
+        }
+
+        async function prosesDaftar(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const konfirmasi = document.getElementById('konfirmasi-password').value;
+            const tombol = document.getElementById('tombol-daftar');
+
+            // Validasi sisi klien
+            if (!username || !email || !password || !konfirmasi) {
+                tampilError('Semua field wajib diisi!');
+                return;
+            }
+            if (!/^[a-zA-Z0-9_]{3,}$/.test(username)) {
+                tampilError('Username tidak valid!');
+                return;
+            }
+            if (password.length < 6) {
+                tampilError('Password minimal 6 karakter!');
+                return;
+            }
+            if (password !== konfirmasi) {
+                tampilError('Konfirmasi password tidak cocok!');
+                return;
+            }
+
+            tombol.disabled = true;
+            tombol.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>MENDAFTAR...';
+
+            try {
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('email', email);
+                formData.append('password', password);
+
+                const respons = await fetch('[herisusanta.my.id](https://herisusanta.my.id/javalogin/api/register.php)', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await respons.json();
+
+                if (data.status === 'success' || data.success === true || data.message === 'Register berhasil') {
+                    tampilSukses('Pendaftaran berhasil! Mengalihkan ke halaman login...');
+                    setTimeout(() => { window.location.href = 'masuk.html'; }, 2000);
+
+                } else {
+                    const pesanGagal = data.message || 'Pendaftaran gagal. Username mungkin sudah digunakan.';
+                    tampilError(pesanGagal);
+                    tombol.disabled = false;
+                    tombol.innerHTML = '<i class="fas fa-user-plus mr-2"></i>DAFTAR SEKARANG';
+                }
+
+            } catch (err) {
+                // Fallback ke localStorage
+                let akunLokal = JSON.parse(localStorage.getItem('akunSigma') || '{}');
+                if (akunLokal[username]) {
+                    tampilError('Username sudah digunakan!');
+                    tombol.disabled = false;
+                    tombol.innerHTML = '<i class="fas fa-user-plus mr-2"></i>DAFTAR SEKARANG';
+                } else {
+                    akunLokal[username] = { password: password, email: email };
+                    localStorage.setItem('akunSigma', JSON.stringify(akunLokal));
+                    tampilSukses('Pendaftaran berhasil (mode offline)! Mengalihkan ke login...');
+                    setTimeout(() => { window.location.href = 'masuk.html'; }, 2000);
+                }
+            }
+        }
+
+        // Redirect jika sudah login
+        window.onload = function() {
+            if (localStorage.getItem('userAktif')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
