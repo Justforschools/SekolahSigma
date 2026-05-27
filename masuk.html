@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk - Sigma Club Indonesia</title>
+    <script src="[cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <link href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)" rel="stylesheet">
+    <style>
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .aksen-kuning { color: #facc15; }
+        .bg-kuning { background-color: #facc15; }
+        .input-sigma {
+            background: #111;
+            border: 1px solid #333;
+            color: #fff;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .input-sigma:focus { border-color: #facc15; }
+        .input-sigma::placeholder { color: #555; }
+        .kartu { background: #0a0a0a; border: 1px solid #222; }
+        .tombol-utama {
+            width: 100%;
+            background: #facc15;
+            color: #000;
+            font-weight: 900;
+            padding: 13px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .tombol-utama:hover { background: #eab308; }
+        .tombol-utama:disabled { background: #555; cursor: not-allowed; }
+        .pesan-error { color: #f87171; font-size: 0.8rem; text-align: center; margin-top: 8px; display: none; }
+        .pesan-sukses { color: #4ade80; font-size: 0.8rem; text-align: center; margin-top: 8px; display: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navigasi -->
+    <nav class="bg-black/90 border-b border-zinc-800 p-5 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-black italic aksen-kuning tracking-tighter">SIGMACLUB</a>
+            <a href="index.html" class="text-zinc-400 text-sm hover:text-yellow-400 transition">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali ke Beranda
+            </a>
+        </div>
+    </nav>
+
+    <!-- Form Login -->
+    <main class="flex-grow flex items-center justify-center px-4 py-16">
+        <div class="kartu p-10 rounded-2xl w-full max-w-md shadow-2xl">
+            
+            <!-- Header -->
+            <div class="text-center mb-10">
+                <div class="text-6xl mb-4">⚡</div>
+                <h1 class="text-3xl font-black italic uppercase mb-2">MASUK KE <span class="aksen-kuning">SIGMA</span></h1>
+                <p class="text-zinc-500 text-sm">Lanjutkan perjalanan kedisiplinanmu</p>
+            </div>
+
+            <!-- Form -->
+            <form id="loginForm" onsubmit="prosesLogin(event)">
+                <div class="space-y-5">
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-400 mb-2 tracking-widest">Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="input-sigma" 
+                            placeholder="Masukkan username..."
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-400 mb-2 tracking-widest">Password</label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="input-sigma pr-12" 
+                                placeholder="Masukkan password..."
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button 
+                                type="button"
+                                onclick="togglePassword('password')" 
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-yellow-400 transition"
+                            >
+                                <i class="fas fa-eye" id="ikon-password"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="pesan-error" class="pesan-error">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        <span id="teks-error"></span>
+                    </div>
+                    <div id="pesan-sukses" class="pesan-sukses">
+                        <i class="fas fa-check-circle mr-1"></i>
+                        <span id="teks-sukses"></span>
+                    </div>
+
+                    <button type="submit" class="tombol-utama" id="tombol-masuk">
+                        <i class="fas fa-sign-in-alt mr-2"></i>MASUK SEKARANG
+                    </button>
+
+                </div>
+            </form>
+
+            <!-- Divider -->
+            <div class="flex items-center my-8">
+                <div class="flex-grow border-t border-zinc-800"></div>
+                <span class="mx-4 text-zinc-600 text-xs uppercase">atau</span>
+                <div class="flex-grow border-t border-zinc-800"></div>
+            </div>
+
+            <!-- Link Daftar -->
+            <p class="text-center text-zinc-500 text-sm">
+                Belum punya akun? 
+                <a href="daftar.html" class="aksen-kuning font-bold hover:underline">Daftar Sekarang</a>
+            </p>
+
+            <!-- Info Demo -->
+            <div class="mt-8 bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-center">
+                <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-2">Akun Demo</p>
+                <p class="text-xs text-zinc-400">User: <span class="text-yellow-400 font-bold">heri</span> / Pass: <span class="text-yellow-400 font-bold">123</span></p>
+                <p class="text-xs text-zinc-400 mt-1">Admin: <span class="text-yellow-400 font-bold">admin</span> / Pass: <span class="text-yellow-400 font-bold">123</span></p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-6 border-t border-zinc-900 text-center text-zinc-700 text-[10px] font-bold uppercase tracking-widest">
+        &copy; 2024 SIGMA CLUB - SMAN 8 YOGYAKARTA
+    </footer>
+
+    <script>
+        function togglePassword(idInput) {
+            const input = document.getElementById(idInput);
+            const ikon = document.getElementById('ikon-' + idInput);
+            if (input.type === 'password') {
+                input.type = 'text';
+                ikon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                ikon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function tampilError(pesan) {
+            const elError = document.getElementById('pesan-error');
+            const elSukses = document.getElementById('pesan-sukses');
+            document.getElementById('teks-error').innerText = pesan;
+            elError.style.display = 'block';
+            elSukses.style.display = 'none';
+        }
+
+        function tampilSukses(pesan) {
+            const elError = document.getElementById('pesan-error');
+            const elSukses = document.getElementById('pesan-sukses');
+            document.getElementById('teks-sukses').innerText = pesan;
+            elSukses.style.display = 'block';
+            elError.style.display = 'none';
+        }
+
+        async function prosesLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const tombol = document.getElementById('tombol-masuk');
+
+            if (!username || !password) {
+                tampilError('Username dan password wajib diisi!');
+                return;
+            }
+
+            tombol.disabled = true;
+            tombol.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>MEMPROSES...';
+
+            try {
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                const respons = await fetch('[herisusanta.my.id](https://herisusanta.my.id/javalogin/api/login.php)', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await respons.json();
+
+                if (data.status === 'success' || data.success === true || data.message === 'Login berhasil') {
+                    tampilSukses('Login berhasil! Mengalihkan...');
+                    localStorage.setItem('userAktif', username);
+
+                    // Inisialisasi data streak jika belum ada
+                    let dataBasis = JSON.parse(localStorage.getItem('userDataSigma') || '{}');
+                    if (!dataBasis[username]) {
+                        dataBasis[username] = { streak: 0, misiSelesai: [] };
+                        localStorage.setItem('userDataSigma', JSON.stringify(dataBasis));
+                    }
+
+                    // Redirect berdasarkan role
+                    setTimeout(() => {
+                        if (username === 'admin') {
+                            window.location.href = 'admin.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1200);
+
+                } else {
+                    const pesanGagal = data.message || 'Username atau password salah!';
+                    tampilError(pesanGagal);
+                    tombol.disabled = false;
+                    tombol.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>MASUK SEKARANG';
+                }
+
+            } catch (err) {
+                // Fallback ke localStorage jika API tidak bisa diakses
+                const akunLokal = JSON.parse(localStorage.getItem('akunSigma') || '{}');
+                if (akunLokal[username] && akunLokal[username].password === password) {
+                    tampilSukses('Login berhasil! Mengalihkan...');
+                    localStorage.setItem('userAktif', username);
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+                } else {
+                    tampilError('Tidak dapat terhubung ke server. Periksa koneksi internet.');
+                    tombol.disabled = false;
+                    tombol.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>MASUK SEKARANG';
+                }
+            }
+        }
+
+        // Redirect jika sudah login
+        window.onload = function() {
+            if (localStorage.getItem('userAktif')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
